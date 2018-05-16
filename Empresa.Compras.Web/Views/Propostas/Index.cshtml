@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Empresa.Compras.Entities.Proposta>
+
+@{
+    ViewBag.Title = "Lista Propostas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="divExcluir"></div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Compras - Propostas</h4>
+    </div>
+    <div class="panel-body">
+        @Html.ActionLink("Nova proposta", "Create", "Propostas", new { @class = "btn btn-primary" })
+
+        <table class="table table-striped table-condensed table-bordered marginTop">
+            <thead>
+                <tr>                   
+                    <th class="text-center">Nome</th>
+                    <th class="text-center">Data proposta</th>
+                    <th class="text-center">Valor</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Fornecedor</th>
+                    <th class="text-center">Categoria</th>
+                    <th class="text-center">Excluir</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr id="row-@item.IdFornecedor">
+                    <td>
+                        @Html.ActionLink(item.Nome, "Edit", new { item.IdFornecedor })
+                    </td>
+                    <td class="text-left">
+                        @item.Nome
+                    </td>
+                    <td class="text-center">
+                        @item.DataProposta
+                    </td>
+                    <td class="text-right">
+                        @item.ValorProposta
+                    </td>
+                    <td class="text-center">
+                        @item.Status
+                    </td>
+                    <td class="text-left">
+                        @item.Fornecedor.Nome
+                    </td>
+                    <td class="text-left">
+                        @item.Categoria.Nome
+                    </td>
+                    <td class="text-center">
+                        <input type="submit" class="btn btn-danger btn-xs" id="@item.IdProposta" name="@item.Nome" value="Excluir" />
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("Confirmacao")

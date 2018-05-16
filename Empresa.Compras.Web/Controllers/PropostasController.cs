@@ -9,11 +9,11 @@ using System.Web.Mvc;
 
 namespace Empresa.Compras.Web.Controllers
 {
-    public class UsuariosController : Controller
+    public class PropostasController : Controller
     {
         HttpClient client = new HttpClient();
 
-        public UsuariosController()
+        public PropostasController()
         {
             client.BaseAddress = new Uri("http://localhost:5677");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -21,42 +21,42 @@ namespace Empresa.Compras.Web.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "admin"); // TODO Ajustar autenticação
         }
 
-        // GET: Usuarios
+        // GET: Propostas
         public ActionResult Index()
         {
-            List<Usuario> usuarios = new List<Usuario>();
+            List<Proposta> propostas = new List<Proposta>();
 
-            HttpResponseMessage response = client.GetAsync("/api/usuarios").Result;
+            HttpResponseMessage response = client.GetAsync("/api/propostas").Result;
 
             if (response.IsSuccessStatusCode)
             {
-                usuarios = response.Content.ReadAsAsync<List<Usuario>>().Result;
+                propostas = response.Content.ReadAsAsync<List<Proposta>>().Result;
             }
-            return View(usuarios);
+            return View(propostas);
         }        
 
-        // GET: Usuarios/Create
+        // GET: Propostas/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: Propostas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public ActionResult Create(Proposta proposta)
         {
             try
             {
-                HttpResponseMessage response = client.PostAsJsonAsync<Usuario>($"/api/usuarios", usuario).Result;
+                HttpResponseMessage response = client.PostAsJsonAsync<Proposta>($"/api/propostas", proposta).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
-                    TempData["mensagem"] = $"{usuario.Nome} foi salvo com sucesso";
+                    TempData["mensagem"] = $"{proposta.Nome} foi salvo com sucesso";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["error"] = "Erro ao criar usuário.";
+                    TempData["error"] = "Erro ao criar proposta.";
                     return View();
                 }
             }
@@ -66,34 +66,34 @@ namespace Empresa.Compras.Web.Controllers
             }
         }
 
-        // GET: Usuarios/Edit/5
-        public ActionResult Edit(int idUsuario)
+        // GET: Propostas/Edit/5
+        public ActionResult Edit(int idProposta)
         {
-            HttpResponseMessage response = client.GetAsync($"/api/usuarios/{idUsuario}").Result;
-            Usuario usuario = response.Content.ReadAsAsync<Usuario>().Result;
+            HttpResponseMessage response = client.GetAsync($"/api/propostas/{idProposta}").Result;
+            Proposta proposta = response.Content.ReadAsAsync<Proposta>().Result;
 
-            if (usuario != null)
-                return View(usuario);
+            if (proposta != null)
+                return View(proposta);
             else
                 return HttpNotFound();
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Propostas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int idUsuario, Usuario usuario)
+        public ActionResult Edit(int idProposta, Proposta proposta)
         {
             try
             {
-                HttpResponseMessage response = client.PutAsJsonAsync<Usuario>($"/api/usuarios/{idUsuario}", usuario).Result;
+                HttpResponseMessage response = client.PutAsJsonAsync<Proposta>($"/api/propostas/{idProposta}", proposta).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    TempData["mensagem"] = $"{usuario.Nome} foi salvo com sucesso";
+                    TempData["mensagem"] = $"{proposta.Nome} foi salvo com sucesso";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["error"] = "Erro ao alterar usuario.";
+                    TempData["error"] = "Erro ao alterar proposta.";
                     return View();
                 }
             }
@@ -101,22 +101,18 @@ namespace Empresa.Compras.Web.Controllers
             {
                 return View();
             }
-        }
+        }        
 
-        // POST: Usuarios/Delete/5
+        // POST: Propostas/Delete/5
         [HttpPost]
-        public JsonResult Delete(int idUsuario)
+        public JsonResult Delete(int idProposta)
         {
             string mensagem = string.Empty;
+            HttpResponseMessage response = client.GetAsync($"/api/propostas/{idProposta}").Result;
+            Proposta proposta = response.Content.ReadAsAsync<Proposta>().Result;
 
-            HttpResponseMessage response = client.GetAsync($"/api/usuarios/{idUsuario}").Result;
-
-            Usuario usuario = response.Content.ReadAsAsync<Usuario>().Result;
-
-            if (usuario != null)
-            {
-                mensagem = $"{usuario.Nome} foi excluido com sucesso";
-            }
+            if (proposta != null)           
+                mensagem = $"{proposta.Nome} foi excluido com sucesso";           
 
             return Json(mensagem, JsonRequestBehavior.AllowGet);
         }

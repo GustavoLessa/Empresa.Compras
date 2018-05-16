@@ -1,19 +1,17 @@
 ﻿using Empresa.Compras.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Empresa.Compras.Web.Controllers
 {
-    public class UsuariosController : Controller
+    public class FornecedoresController : Controller
     {
         HttpClient client = new HttpClient();
 
-        public UsuariosController()
+        public FornecedoresController()
         {
             client.BaseAddress = new Uri("http://localhost:5677");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -21,42 +19,42 @@ namespace Empresa.Compras.Web.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "admin"); // TODO Ajustar autenticação
         }
 
-        // GET: Usuarios
+        // GET: Fornecedores
         public ActionResult Index()
         {
-            List<Usuario> usuarios = new List<Usuario>();
+            List<Fornecedor> fornecedores = new List<Fornecedor>();
 
-            HttpResponseMessage response = client.GetAsync("/api/usuarios").Result;
+            HttpResponseMessage response = client.GetAsync("/api/fornecedores").Result;
 
             if (response.IsSuccessStatusCode)
             {
-                usuarios = response.Content.ReadAsAsync<List<Usuario>>().Result;
+                fornecedores = response.Content.ReadAsAsync<List<Fornecedor>>().Result;
             }
-            return View(usuarios);
-        }        
+            return View(fornecedores);
+        }       
 
-        // GET: Usuarios/Create
+        // GET: Fornecedores/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: Fornecedores/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public ActionResult Create(Fornecedor fornecedor)
         {
             try
             {
-                HttpResponseMessage response = client.PostAsJsonAsync<Usuario>($"/api/usuarios", usuario).Result;
+                HttpResponseMessage response = client.PostAsJsonAsync<Fornecedor>($"/api/fornecedores", fornecedor).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
-                    TempData["mensagem"] = $"{usuario.Nome} foi salvo com sucesso";
+                    TempData["mensagem"] = $"{fornecedor.Nome} foi salvo com sucesso";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["error"] = "Erro ao criar usuário.";
+                    TempData["error"] = "Erro ao criar fornecedor.";
                     return View();
                 }
             }
@@ -66,34 +64,34 @@ namespace Empresa.Compras.Web.Controllers
             }
         }
 
-        // GET: Usuarios/Edit/5
-        public ActionResult Edit(int idUsuario)
+        // GET: Fornecedores/Edit/5
+        public ActionResult Edit(int idFornecedor)
         {
-            HttpResponseMessage response = client.GetAsync($"/api/usuarios/{idUsuario}").Result;
-            Usuario usuario = response.Content.ReadAsAsync<Usuario>().Result;
+            HttpResponseMessage response = client.GetAsync($"/api/fornecedores/{idFornecedor}").Result;
+            Fornecedor fornecedor = response.Content.ReadAsAsync<Fornecedor>().Result;
 
-            if (usuario != null)
-                return View(usuario);
+            if (fornecedor != null)
+                return View(fornecedor);
             else
                 return HttpNotFound();
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Fornecedores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int idUsuario, Usuario usuario)
+        public ActionResult Edit(int idForncedor, Fornecedor fornecedor)
         {
             try
             {
-                HttpResponseMessage response = client.PutAsJsonAsync<Usuario>($"/api/usuarios/{idUsuario}", usuario).Result;
+                HttpResponseMessage response = client.PutAsJsonAsync<Fornecedor>($"/api/fornecedores/{idForncedor}", fornecedor).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    TempData["mensagem"] = $"{usuario.Nome} foi salvo com sucesso";
+                    TempData["mensagem"] = $"{fornecedor.Nome} foi salvo com sucesso";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["error"] = "Erro ao alterar usuario.";
+                    TempData["error"] = "Erro ao alterar fornecdor.";
                     return View();
                 }
             }
@@ -103,19 +101,19 @@ namespace Empresa.Compras.Web.Controllers
             }
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: Fornecedores/Delete/5
         [HttpPost]
-        public JsonResult Delete(int idUsuario)
+        public JsonResult Delete(int idFornecedor)
         {
             string mensagem = string.Empty;
 
-            HttpResponseMessage response = client.GetAsync($"/api/usuarios/{idUsuario}").Result;
+            HttpResponseMessage response = client.GetAsync($"/api/fornecedores/{idFornecedor}").Result;
 
-            Usuario usuario = response.Content.ReadAsAsync<Usuario>().Result;
+            Fornecedor fornecedor = response.Content.ReadAsAsync<Fornecedor>().Result;
 
-            if (usuario != null)
+            if (fornecedor != null)
             {
-                mensagem = $"{usuario.Nome} foi excluido com sucesso";
+                mensagem = $"{fornecedor.Nome} foi excluido com sucesso";
             }
 
             return Json(mensagem, JsonRequestBehavior.AllowGet);
