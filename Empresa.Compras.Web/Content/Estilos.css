@@ -1,0 +1,24 @@
+﻿.valorNegativo{
+    font-weight: bold;
+    color:red;
+}
+.valorPositivo {
+    font-weight: bold;
+    color: Green;
+}
+
+.marginRight {
+    margin-right: 15px
+}
+
+.marginBottom {
+    margin-bottom: 15px
+}
+
+.marginTop {
+    margin-top: 15px
+}
+
+.subPanel {
+    margin: 20px
+}
