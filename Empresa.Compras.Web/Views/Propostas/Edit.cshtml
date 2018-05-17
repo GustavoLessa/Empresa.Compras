@@ -15,6 +15,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         @Html.HiddenFor(model => model.IdProposta)
+        @Html.HiddenFor(model => model.DataProposta)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, new { @class = "control-label" })
@@ -22,15 +23,15 @@
             @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.DataProposta, "Data da proposta", new { @class = "control-label" })
-            @Html.EditorFor(model => model.DataProposta, new { htmlAttributes = new { @class = "form-control", onkeyup = "formataData(this,event)" } })
+            @Html.EditorFor(model => model.DataProposta, new { htmlAttributes = new { @class = "form-control", onkeyup = "formataData(this,event)", @disabled = "disabled" } })
             @Html.ValidationMessageFor(model => model.DataProposta, "", new { @class = "text-danger" })
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.DescricaoGeral, "Descrição", new { @class = "control-label" })
-            @Html.EditorFor(model => model.DescricaoGeral, new { htmlAttributes = new { @class = "form-control", onkeyup = "formataData(this,event)" } })
+            @Html.EditorFor(model => model.DescricaoGeral, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.DescricaoGeral, "", new { @class = "text-danger" })
         </div>
 
@@ -55,13 +56,13 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.AprovadoPeloAnalista, "Aprovada pelo analista Financeiro?", new { @class = "control-label" })
-            @Html.EditorFor(model => model.AprovadoPeloAnalista, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AprovadoPeloAnalista)
             @Html.ValidationMessageFor(model => model.AprovadoPeloAnalista, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.AprovadoPeloDiretor, "Aprovada pelo diretor Financeiro?", new { @class = "control-label" })
-            @Html.EditorFor(model => model.AprovadoPeloDiretor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AprovadoPeloDiretor)
             @Html.ValidationMessageFor(model => model.AprovadoPeloDiretor, "", new { @class = "text-danger" })
         </div>
 

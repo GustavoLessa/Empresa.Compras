@@ -16,6 +16,7 @@ namespace Empresa.Compras.Api.Models.Validation
 
             RuleFor(e => e.ValorProposta)
               .NotEmpty().WithMessage("O Valor da proposta deve ser preenchida");
+            
         }
     }
 }

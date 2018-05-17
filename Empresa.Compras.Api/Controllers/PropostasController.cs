@@ -11,6 +11,7 @@ using System.Web.Http.OData.Query;
 using Empresa.Compras.Api.Models.Validation;
 using Empresa.Compras.Api.Filters;
 using FluentValidation;
+using System;
 
 namespace Empresa.Compras.Api.Controllers
 {
@@ -25,9 +26,7 @@ namespace Empresa.Compras.Api.Controllers
                      PageSize = 10)]
         public IQueryable<Proposta> GetPropostas()
         {
-            var t = db.Propostas;
-
-            return t;
+            return db.Propostas;
         }
 
         // GET: api/Propostas/5
@@ -57,15 +56,24 @@ namespace Empresa.Compras.Api.Controllers
             if (id != proposta.IdProposta)
                 return BadRequest("O id informado na URL deve ser igual ao id informado no corpo da requisição.");
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
+            //Verifica se alterou o status para aprovada
+            //RN04.01 - Validade das propostas: as propostas expiram após 24h, não podendo mais ser aprovadas;
+            if (GetStatus(id) != "Aprovada" && proposta.Status == "Aprovada")
+            {                
+                TimeSpan diferenca = DateTime.Now - proposta.DataProposta;
+                int dias = (int)diferenca.TotalDays;
 
-            //if (id != proposta.IdProposta)
-            //{
-            //    return BadRequest();
-            //}
+                if (dias > 1)//Todo Deixar prazo dinamico conforme configuração do administrador
+                {
+                    return BadRequest("Proposta expirada! Não é possível aprovar uma proposta após 24hs.");
+                }            
+            }
+
+            //RN04.03 - Edição de propostas: as propostas não podem ser editadas caso já tenham passado pela aprovação do analista financeiro.
+            if (AprovadaFinanceiro(id))
+            {
+                return BadRequest("Proposta já foi aprovada pelo financeiro e não pode se alterada.");                 
+            }
 
             validador.ValidateAndThrow(proposta);
 
@@ -140,6 +148,20 @@ namespace Empresa.Compras.Api.Controllers
         private bool PropostaExists(int id)
         {
             return db.Propostas.Count(e => e.IdProposta == id) > 0;
+        }
+
+        private string GetStatus(int id)
+        {
+            using (var db = new ComprasContext())
+            {
+                return db.Propostas.Find(id).Status;
+            }
+        }
+
+        private bool AprovadaFinanceiro(int id)
+        {
+            using (var db = new ComprasContext())
+                return db.Propostas.Find(id).AprovadoPeloAnalista;            
         }
     }
 }

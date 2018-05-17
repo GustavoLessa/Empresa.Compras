@@ -79,11 +79,11 @@ namespace Empresa.Compras.Web.Controllers
         // POST: Fornecedores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int idForncedor, Fornecedor fornecedor)
+        public ActionResult Edit(int idFornecedor, Fornecedor fornecedor)
         {
             try
             {
-                HttpResponseMessage response = client.PutAsJsonAsync<Fornecedor>($"/api/fornecedores/{idForncedor}", fornecedor).Result;
+                HttpResponseMessage response = client.PutAsJsonAsync<Fornecedor>($"/api/fornecedores/{idFornecedor}", fornecedor).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
                     TempData["mensagem"] = $"{fornecedor.Nome} foi salvo com sucesso";
@@ -108,10 +108,11 @@ namespace Empresa.Compras.Web.Controllers
             string mensagem = string.Empty;
 
             HttpResponseMessage response = client.DeleteAsync($"/api/fornecedores/{idFornecedor}").Result;
+            Fornecedor forn = response.Content.ReadAsAsync<Fornecedor>().Result;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                mensagem = "Fornecedor excluído com sucesso";
+                mensagem = $"Fornecedor {forn.Nome} foi excluído com sucesso";
             }
             return Json(mensagem, JsonRequestBehavior.AllowGet);
         }

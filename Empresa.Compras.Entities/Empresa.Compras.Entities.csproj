@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Categoria.cs" />
     <Compile Include="Fornecedor.cs" />
+    <Compile Include="Metadata\Metadata.cs" />
+    <Compile Include="PartialClasses.cs" />
     <Compile Include="Proposta.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
