@@ -109,15 +109,12 @@ namespace Empresa.Compras.Web.Controllers
         {
             string mensagem = string.Empty;
 
-            HttpResponseMessage response = client.GetAsync($"/api/categorias/{idCategoria}").Result;
+            HttpResponseMessage response = client.DeleteAsync($"/api/categorias/{idCategoria}").Result;
 
-            Categoria categoria = response.Content.ReadAsAsync<Categoria>().Result;          
-
-            if (categoria != null)
-            {
-                mensagem = $"{categoria.Nome} foi excluida com sucesso";
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {                
+                mensagem = "Categoria foi excluida com sucesso";                
             }
-
             return Json(mensagem, JsonRequestBehavior.AllowGet);
         }
     }

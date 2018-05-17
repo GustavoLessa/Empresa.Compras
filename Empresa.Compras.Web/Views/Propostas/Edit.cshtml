@@ -10,71 +10,78 @@
 
     @using (Html.BeginForm())
     {
-        <div class="panel-body">
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="panel-body">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            @Html.HiddenFor(model => model.IdProposta)
+        @Html.HiddenFor(model => model.IdProposta)
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Nome, new { @class = "control-label" })
-                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DataProposta, new { @class = "control-label" })
-                @Html.EditorFor(model => model.DataProposta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataProposta, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DescricaoGeral, new { @class = "control-label" })
-                @Html.EditorFor(model => model.DescricaoGeral, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DescricaoGeral, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ValorProposta, new { @class = "control-label" })
-                @Html.EditorFor(model => model.ValorProposta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ValorProposta, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status, new { @class = "control-label" })
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.AprovadoPeloAnalista, new { @class = "control-label" })
-                @Html.EditorFor(model => model.AprovadoPeloAnalista, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AprovadoPeloAnalista, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.AprovadoPeloDiretor, new { @class = "control-label" })
-                @Html.EditorFor(model => model.AprovadoPeloDiretor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AprovadoPeloDiretor, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Fornecedor, new { @class = "control-label" })
-                @Html.EditorFor(model => model.Fornecedor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Fornecedor, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Categoria, new { @class = "control-label" })
-                @Html.EditorFor(model => model.Categoria, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
-            </div>
-
-
-            <div class="panel-footer">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-                @Html.ActionLink("Cancelar e retornar", "Index", null, new { @class = "btn btn-default" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nome, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataProposta, "Data da proposta", new { @class = "control-label" })
+            @Html.EditorFor(model => model.DataProposta, new { htmlAttributes = new { @class = "form-control", onkeyup = "formataData(this,event)" } })
+            @Html.ValidationMessageFor(model => model.DataProposta, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescricaoGeral, "Descrição", new { @class = "control-label" })
+            @Html.EditorFor(model => model.DescricaoGeral, new { htmlAttributes = new { @class = "form-control", onkeyup = "formataData(this,event)" } })
+            @Html.ValidationMessageFor(model => model.DescricaoGeral, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ValorProposta, "Valor da proposta", new { @class = "control-label" })
+            @Html.EditorFor(model => model.ValorProposta, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ValorProposta, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.Status, new List<SelectListItem>
+            {
+            new SelectListItem() {Text = "Aprovada", Value="Aprovada"},
+            new SelectListItem() {Text = "Reprovada", Value="Reprovada"},
+            new SelectListItem() {Text = "Pendente Analise", Value="PendenteAnalise"},
+            new SelectListItem() {Text = "Pendente Diretoria", Value="PendenteDiretoria"}
+
+            }, "Status", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AprovadoPeloAnalista, "Aprovada pelo analista Financeiro?", new { @class = "control-label" })
+            @Html.EditorFor(model => model.AprovadoPeloAnalista, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AprovadoPeloAnalista, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AprovadoPeloDiretor, "Aprovada pelo diretor Financeiro?", new { @class = "control-label" })
+            @Html.EditorFor(model => model.AprovadoPeloDiretor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AprovadoPeloDiretor, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Fornecedor", new { @class = "control-label" })
+            @Html.DropDownList("IdFornecedor", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Fornecedor, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdCategoria, "Categorias")
+            @Html.DropDownList("IdCategoria", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IdCategoria, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="panel-footer">
+            <input type="submit" value="Salvar" class="btn btn-primary" />
+            @Html.ActionLink("Cancelar e retornar", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
     }
 </div>

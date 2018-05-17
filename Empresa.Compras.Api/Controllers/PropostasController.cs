@@ -20,12 +20,14 @@ namespace Empresa.Compras.Api.Controllers
         private PropostaValidator validador = new PropostaValidator();
 
         // GET: api/Propostas
-        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter | AllowedQueryOptions.Skip | AllowedQueryOptions.Top | AllowedQueryOptions.InlineCount,
+        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter | AllowedQueryOptions.Expand  | AllowedQueryOptions.Skip | AllowedQueryOptions.Top | AllowedQueryOptions.InlineCount,
                      MaxTop = 10,
                      PageSize = 10)]
         public IQueryable<Proposta> GetPropostas()
         {
-            return db.Propostas;
+            var t = db.Propostas;
+
+            return t;
         }
 
         // GET: api/Propostas/5

@@ -107,15 +107,12 @@ namespace Empresa.Compras.Web.Controllers
         {
             string mensagem = string.Empty;
 
-            HttpResponseMessage response = client.GetAsync($"/api/fornecedores/{idFornecedor}").Result;
+            HttpResponseMessage response = client.DeleteAsync($"/api/fornecedores/{idFornecedor}").Result;
 
-            Fornecedor fornecedor = response.Content.ReadAsAsync<Fornecedor>().Result;
-
-            if (fornecedor != null)
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
-                mensagem = $"{fornecedor.Nome} foi excluido com sucesso";
+                mensagem = "Fornecedor excluído com sucesso";
             }
-
             return Json(mensagem, JsonRequestBehavior.AllowGet);
         }
     }

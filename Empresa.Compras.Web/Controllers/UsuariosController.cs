@@ -1,10 +1,8 @@
 ﻿using Empresa.Compras.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Empresa.Compras.Web.Controllers
@@ -108,17 +106,12 @@ namespace Empresa.Compras.Web.Controllers
         public JsonResult Delete(int idUsuario)
         {
             string mensagem = string.Empty;
-
-            HttpResponseMessage response = client.GetAsync($"/api/usuarios/{idUsuario}").Result;
-
-            Usuario usuario = response.Content.ReadAsAsync<Usuario>().Result;
-
-            if (usuario != null)
+            HttpResponseMessage response = client.DeleteAsync($"/api/usuarios/{idUsuario}").Result;
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
-                mensagem = $"{usuario.Nome} foi excluido com sucesso";
+                mensagem = "Usuário excluído com sucesso";
             }
-
-            return Json(mensagem, JsonRequestBehavior.AllowGet);
+            return Json(mensagem, JsonRequestBehavior.AllowGet);          
         }
     }
 }
