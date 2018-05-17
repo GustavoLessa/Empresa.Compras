@@ -22,6 +22,7 @@ namespace Empresa.Compras.Api
             );
 
             config.Filters.Add(new ValidationExceptionFilterAttribute());
+            //SwaggerConfig.Register();
         }
     }
 }
