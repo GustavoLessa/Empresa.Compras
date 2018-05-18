@@ -2,6 +2,7 @@
 using Empresa.Compras.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
@@ -14,7 +15,7 @@ namespace Empresa.Compras.Web.Controllers
 
         public PropostasController()
         {
-            client.BaseAddress = new Uri("http://localhost:5677");
+            client.BaseAddress = new Uri(ConfigurationManager.AppSettings["UriApi"]);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "admin"); // TODO Ajustar autenticação
